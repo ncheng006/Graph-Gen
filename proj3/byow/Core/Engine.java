@@ -4,8 +4,11 @@ import byow.InputDemo.StringInputDevice;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
+<<<<<<< HEAD
 
 import java.util.Random;
+=======
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
 
 public class Engine {
     TERenderer ter = new TERenderer();
@@ -30,6 +33,23 @@ public class Engine {
             }
         }
 
+<<<<<<< HEAD
+=======
+
+    public void createRoom(int x, int y, int width, int length) {
+        int rightWall = x + width - 1;
+        int topWall = y + length - 1;
+        for(int i = x; i <= rightWall; i++) {
+            for (int j = y; j <= topWall; j++) {
+                if( i == rightWall || j == topWall || i == x || j == y) {
+                    finalWorldFrame[i][j] = Tileset.WALL;
+                } else {
+                    finalWorldFrame[i][j] = Tileset.FLOOR;
+                }
+            }
+        }
+
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
     }
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
@@ -72,31 +92,51 @@ public class Engine {
 
         while (sid.possibleNextInput()) {
             char current = sid.getNextKey();
+<<<<<<< HEAD
             if (current == 'N' || current == 'n') {
+=======
+            if (current == 'N') {
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
                 seedReady = true;
             }
             if (seedReady && Character.isDigit(current)) {
                 seed *= 10;
                 seed += Character.getNumericValue(current);
             }
+<<<<<<< HEAD
             if (current == 'S' || current == 's') {
+=======
+            if (current == 'S') {
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
                 break;
             }
         }
 
+<<<<<<< HEAD
         ter.initialize(WIDTH, HEIGHT);
         finalWorldFrame = new TETile[WIDTH][HEIGHT];
         createWorld(finalWorldFrame, seed);
+=======
+        ter.initialize(WIDTH,HEIGHT);
+        finalWorldFrame = new TETile[WIDTH][HEIGHT];
+        createWorld(finalWorldFrame);
+        createRoom(25,10,10,10);
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
         ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
 
+<<<<<<< HEAD
     public void createWorld(TETile[][] array, long seed) {
+=======
+    public void createWorld(TETile[][] array){
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
         for (int x = 0; x < WIDTH; x += 1) {
             for (int y = 0; y < HEIGHT; y += 1) {
                 array[x][y] = Tileset.NOTHING;
             }
         }
+<<<<<<< HEAD
         Random r = new Random(seed);
         int numRooms = Math.floorMod(RandomUtils.uniform(r, Integer.MAX_VALUE), 5) + 8;
         for (int i = 0; i < numRooms; i++) {
@@ -107,10 +147,16 @@ public class Engine {
             System.out.println(bottomLeftX + " " + bottomLeftY + " " + width + " " + height);
             createRoom(bottomLeftX, bottomLeftY, width, height);
         }
+=======
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
     }
 
     public static void main(String[] args) {
         Engine a = new Engine();
+<<<<<<< HEAD
         a.interactWithInputString("n69420s");
+=======
+        a.interactWithInputString("N1234S");
+>>>>>>> dc4bf75c0d572e6ef3e164b26139a7d71bd909d8
     }
 }
