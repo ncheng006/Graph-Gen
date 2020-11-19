@@ -13,19 +13,30 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:uwu" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
     <select />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36d5610e-3e31-4fb7-9f04-c4e3cb2171ae" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javalib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/javalib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javalib1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/byow/Core/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/byow/Core/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/proj3.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -39,7 +50,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../CS61B/fa20-s992/library-fa20/javalib" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -155,11 +166,11 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="395" y="125" key="FileChooserDialogImpl" timestamp="1605595931482">
-      <screen x="0" y="0" width="1138" height="640" />
+    <state x="666" y="264" key="FileChooserDialogImpl" timestamp="1605767895760">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="395" y="125" key="FileChooserDialogImpl/0.0.1138.640@0.0.1138.640" timestamp="1605595931482" />
-    <state x="666" y="264" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605288248780" />
+    <state x="666" y="264" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605767895760" />
     <state width="1095" height="149" key="GridCell.Tab.0.bottom" timestamp="1605685504991">
       <screen x="0" y="0" width="1138" height="640" />
     </state>
@@ -196,10 +207,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1860" height="344" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605293404961" />
-    <state x="102" y="0" key="SettingsEditor" timestamp="1605595933746">
-      <screen x="0" y="0" width="1138" height="640" />
+    <state x="319" y="99" key="SettingsEditor" timestamp="1605767900325">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="102" y="0" key="SettingsEditor/0.0.1138.640@0.0.1138.640" timestamp="1605595933746" />
-    <state x="319" y="99" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605289757022" />
+    <state x="319" y="99" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605767900325" />
+    <state x="623" y="232" width="672" height="678" key="search.everywhere.popup" timestamp="1605767431017">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="232" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1605767431017" />
   </component>
 </project>

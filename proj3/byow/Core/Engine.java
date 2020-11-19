@@ -4,12 +4,16 @@ import byow.InputDemo.StringInputDevice;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
-
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class Engine {
     TERenderer ter = new TERenderer();
     private TETile[][] finalWorldFrame;
+
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 50;
@@ -43,6 +47,7 @@ public class Engine {
                 }
             }
         }
+
 
     }
     /**
@@ -83,7 +88,6 @@ public class Engine {
         StringInputDevice sid = new StringInputDevice(input);
         boolean seedReady = false;
         long seed = 0;
-
         while (sid.possibleNextInput()) {
             char current = sid.getNextKey();
             if (current == 'N' || current == 'n') {
@@ -113,13 +117,17 @@ public class Engine {
         }
         Random r = new Random(seed);
         int numRooms = Math.floorMod(RandomUtils.uniform(r, Integer.MAX_VALUE), 5) + 8;
-        for (int i = 0; i < numRooms; i++) {
+        int successfulRooms = 0;
+        while (successfulRooms < numRooms) {
             int bottomLeftX = RandomUtils.uniform(r, 0, WIDTH - MAX_ROOM_WIDTH);
             int bottomLeftY = RandomUtils.uniform(r, 0, HEIGHT - MAX_ROOM_HEIGHT);
             int width = RandomUtils.uniform(r, 4, MAX_ROOM_WIDTH);
             int height = RandomUtils.uniform(r, 4, MAX_ROOM_HEIGHT);
             System.out.println(bottomLeftX + " " + bottomLeftY + " " + width + " " + height);
-            createRoom(bottomLeftX, bottomLeftY, width, height);
+            if (!overLap(bottomLeftX, bottomLeftY, width, height)) {
+                createRoom(bottomLeftX, bottomLeftY, width, height);
+                successfulRooms++;
+            }
         }
     }
 
