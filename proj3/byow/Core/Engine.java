@@ -5,10 +5,8 @@ import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.PriorityQueue;
-import java.util.Random;
+
+import java.util.*;
 
 public class Engine {
     TERenderer ter = new TERenderer();
@@ -115,19 +113,33 @@ public class Engine {
                 array[x][y] = Tileset.NOTHING;
             }
         }
+
         Random r = new Random(seed);
         int numRooms = Math.floorMod(RandomUtils.uniform(r, Integer.MAX_VALUE), 5) + 8;
+        PriorityQueue<Edge> edges = new PriorityQueue();
+        HashMap<RoomNode, Integer> fringe = new HashMap<>();
+
+
         int successfulRooms = 0;
         while (successfulRooms < numRooms) {
             int bottomLeftX = RandomUtils.uniform(r, 0, WIDTH - MAX_ROOM_WIDTH);
             int bottomLeftY = RandomUtils.uniform(r, 0, HEIGHT - MAX_ROOM_HEIGHT);
             int width = RandomUtils.uniform(r, 4, MAX_ROOM_WIDTH);
             int height = RandomUtils.uniform(r, 4, MAX_ROOM_HEIGHT);
-            System.out.println(bottomLeftX + " " + bottomLeftY + " " + width + " " + height);
+
             if (!overLap(bottomLeftX, bottomLeftY, width, height)) {
                 createRoom(bottomLeftX, bottomLeftY, width, height);
+                RoomNode temp = new RoomNode(bottomLeftX, bottomLeftY, width, height);
+                for (RoomNode n : fringe.keySet()) {
+                    edges.add(new Edge(n, temp));
+                }
+                fringe.put(temp, successfulRooms);
                 successfulRooms++;
             }
+        }
+
+        for (int i = 0; i < numRooms - 1; i++) {
+            // Kruskal solver
         }
     }
 

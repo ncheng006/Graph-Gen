@@ -1,10 +1,10 @@
 package byow.Core;
 
-public class Edge {
-    private roomNode from;
-    private roomNode to;
+public class Edge implements Comparable<Edge> {
+    private RoomNode from;
+    private RoomNode to;
 
-    public Edge(roomNode r1, roomNode r2) {
+    public Edge(RoomNode r1, RoomNode r2) {
         from = r1;
         to = r2;
     }
@@ -13,6 +13,7 @@ public class Edge {
         return from.distanceRoom(to);
     }
 
+    @Override
     public int compareTo(Edge other) {
         if (this.weight() < other.weight()) {
             return -1;
