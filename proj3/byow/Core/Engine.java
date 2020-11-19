@@ -16,8 +16,22 @@ public class Engine {
     public static final int MAX_ROOM_WIDTH = 16;
     public static final int MAX_ROOM_HEIGHT = 10;
 
-
+    public Boolean overLap(int x, int y, int width, int height) {
+        int rightWall = x + width - 1;
+        int topWall = y + height - 1;
+        for(int i = x; i <= rightWall; i++) {
+            for (int j = y; j <= topWall; j++) {
+                if( finalWorldFrame[i][j].equals(Tileset.WALL) || finalWorldFrame[i][j].equals(Tileset.FLOOR)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public void createRoom(int x, int y, int width, int height) {
+        if(overLap(x,y,width,height)) {
+            return;
+        }
         int rightWall = x + width - 1;
         int topWall = y + height - 1;
         for(int i = x; i <= rightWall; i++) {
@@ -111,6 +125,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithInputString("n69420s");
+        a.interactWithInputString("n1234s");
     }
 }
