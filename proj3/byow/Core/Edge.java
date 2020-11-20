@@ -9,10 +9,10 @@ public class Edge implements Comparable<Edge> {
         to = r2;
     }
 
-    public RoomNode getFrom(){
+    public RoomNode getFrom() {
         return from;
     }
-    public RoomNode getTo(){
+    public RoomNode getTo() {
         return to;
     }
     public double weight() {
