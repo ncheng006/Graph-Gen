@@ -118,8 +118,6 @@ public class Engine {
         int numRooms = Math.floorMod(RandomUtils.uniform(r, Integer.MAX_VALUE), 5) + 8;
         PriorityQueue<Edge> edges = new PriorityQueue();
         HashMap<RoomNode, Integer> fringe = new HashMap<>();
-
-
         int successfulRooms = 0;
         while (successfulRooms < numRooms) {
             int bottomLeftX = RandomUtils.uniform(r, 0, WIDTH - MAX_ROOM_WIDTH);
@@ -137,14 +135,30 @@ public class Engine {
                 successfulRooms++;
             }
         }
+        WeightedQuickUnionUF WQUF = new WeightedQuickUnionUF(successfulRooms);
+        kruskalSolver(edges,fringe,WQUF,successfulRooms);
 
-        for (int i = 0; i < numRooms - 1; i++) {
-            // Kruskal solver
-        }
     }
 
+    public void kruskalSolver(PriorityQueue<Edge> edges,HashMap<RoomNode, Integer> fringe,WeightedQuickUnionUF WQUF, int succRooms){
+        int counter = 0;
+        while(!edges.isEmpty() && counter < succRooms) {
+            Edge temp = edges.poll();
+            int fromInt = fringe.get(temp.getFrom());
+            int toInt = fringe.get(temp.getTo());
+            if(WQUF.connected(fromInt,toInt)){
+                continue;
+            }
+            WQUF.union(fromInt,toInt);
+            helperTEConnect();
+            counter += 1;
+        }
+    }
+    public void helperTEConnect() {
+        return;
+    }
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithInputString("n1234s");
+        a.interactWithInputString("n12345s");
     }
 }

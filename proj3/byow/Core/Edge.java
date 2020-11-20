@@ -9,6 +9,12 @@ public class Edge implements Comparable<Edge> {
         to = r2;
     }
 
+    public RoomNode getFrom(){
+        return from;
+    }
+    public RoomNode getTo(){
+        return to;
+    }
     public double weight() {
         return from.distanceRoom(to);
     }
