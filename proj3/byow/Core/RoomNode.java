@@ -5,8 +5,8 @@ public class RoomNode {
     private int startY;
     private int width;
     private int height;
-    private int centerX;
-    private int centerY;
+    int centerX;
+    int centerY;
     public RoomNode(int x, int y, int w, int h) {
         startX = x;
         startY = y;

@@ -9,7 +9,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import java.util.*;
 
 public class Engine {
-    TERenderer ter = new TERenderer();
+    private TERenderer ter = new TERenderer();
     private TETile[][] finalWorldFrame;
 
     /* Feel free to change the width and height. */
@@ -21,9 +21,10 @@ public class Engine {
     public Boolean overLap(int x, int y, int width, int height) {
         int rightWall = x + width - 1;
         int topWall = y + height - 1;
-        for(int i = x; i <= rightWall; i++) {
+        for (int i = x; i <= rightWall; i++) {
             for (int j = y; j <= topWall; j++) {
-                if( finalWorldFrame[i][j].equals(Tileset.WALL) || finalWorldFrame[i][j].equals(Tileset.FLOOR)) {
+                if (finalWorldFrame[i][j].equals(Tileset.WALL)
+                        || finalWorldFrame[i][j].equals(Tileset.FLOOR)) {
                     return true;
                 }
             }
@@ -31,14 +32,14 @@ public class Engine {
         return false;
     }
     public void createRoom(int x, int y, int width, int height) {
-        if(overLap(x,y,width,height)) {
+        if (overLap(x, y, width, height)) {
             return;
         }
         int rightWall = x + width - 1;
         int topWall = y + height - 1;
-        for(int i = x; i <= rightWall; i++) {
+        for (int i = x; i <= rightWall; i++) {
             for (int j = y; j <= topWall; j++) {
-                if( i == rightWall || j == topWall || i == x || j == y) {
+                if (i == rightWall || j == topWall || i == x || j == y) {
                     finalWorldFrame[i][j] = Tileset.WALL;
                 } else {
                     finalWorldFrame[i][j] = Tileset.FLOOR;
@@ -49,21 +50,28 @@ public class Engine {
 
     }
     /**
-     * Method used for exploring a fresh world. This method should handle all inputs,
+     * Method used for exploring a fresh world.
+     * This method should handle all inputs,
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
     }
 
     /**
-     * Method used for autograding and testing your code. The input string will be a series
-     * of characters (for example, "n123sswwdasdassadwas", "n123sss:q", "lwww". The engine should
-     * behave exactly as if the user typed these characters into the engine using
+     * Method used for autograding and testing your
+     * code. The input string will be a series
+     * of characters (for example, "n123sswwdasda
+     * ssadwas", "n123sss:q", "lwww". The engine should
+     * behave exactly as if the user typed these
+     * characters into the engine using
      * interactWithKeyboard.
      *
-     * Recall that strings ending in ":q" should cause the game to quite save. For example,
-     * if we do interactWithInputString("n123sss:q"), we expect the game to run the first
-     * 7 commands (n123sss) and then quit and save. If we then do
+     * Recall that strings ending in ":q" should c
+     * use the game to quite save. For example,
+     * if we do interactWithInputString("n123sss:q"
+     * ), we expect the game to run the first
+     * 7 commands (n123sss) and then quit and save.
+     * If we then do
      * interactWithInputString("l"), we should be back in the exact same state.
      *
      * In other words, both of these calls:
@@ -77,12 +85,6 @@ public class Engine {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] interactWithInputString(String input) {
-        // passed in as an argument, and return a 2D tile representation of the
-        // world that would have been drawn if the same inputs had been given
-        // to interactWithKeyboard().
-        //
-        // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
-        // that works for many different input types.
         StringInputDevice sid = new StringInputDevice(input);
         boolean seedReady = false;
         long seed = 0;
@@ -115,19 +117,24 @@ public class Engine {
         }
 
         Random r = new Random(seed);
-        int numRooms = Math.floorMod(RandomUtils.uniform(r, Integer.MAX_VALUE), 5) + 8;
+        int numRooms = Math.floorMod(RandomUtils.uniform(r,
+                Integer.MAX_VALUE), 5) + 8;
         PriorityQueue<Edge> edges = new PriorityQueue();
         HashMap<RoomNode, Integer> fringe = new HashMap<>();
         int successfulRooms = 0;
         while (successfulRooms < numRooms) {
-            int bottomLeftX = RandomUtils.uniform(r, 0, WIDTH - MAX_ROOM_WIDTH);
-            int bottomLeftY = RandomUtils.uniform(r, 0, HEIGHT - MAX_ROOM_HEIGHT);
+            int bottomLeftX = RandomUtils.uniform(r, 0,
+                    WIDTH - MAX_ROOM_WIDTH);
+            int bottomLeftY = RandomUtils.uniform(r, 0,
+                    HEIGHT - MAX_ROOM_HEIGHT);
             int width = RandomUtils.uniform(r, 4, MAX_ROOM_WIDTH);
-            int height = RandomUtils.uniform(r, 4, MAX_ROOM_HEIGHT);
+            int height = RandomUtils.uniform(r, 4,
+                    MAX_ROOM_HEIGHT);
 
             if (!overLap(bottomLeftX, bottomLeftY, width, height)) {
                 createRoom(bottomLeftX, bottomLeftY, width, height);
-                RoomNode temp = new RoomNode(bottomLeftX, bottomLeftY, width, height);
+                RoomNode temp = new RoomNode(bottomLeftX,
+                        bottomLeftY, width, height);
                 for (RoomNode n : fringe.keySet()) {
                     edges.add(new Edge(n, temp));
                 }
@@ -136,29 +143,92 @@ public class Engine {
             }
         }
         WeightedQuickUnionUF WQUF = new WeightedQuickUnionUF(successfulRooms);
-        kruskalSolver(edges,fringe,WQUF,successfulRooms);
+        kruskalSolver(edges, fringe, WQUF, successfulRooms);
 
     }
 
-    public void kruskalSolver(PriorityQueue<Edge> edges,HashMap<RoomNode, Integer> fringe,WeightedQuickUnionUF WQUF, int succRooms){
+    public void kruskalSolver(PriorityQueue<Edge> edges, HashMap<RoomNode,
+            Integer> fringe, WeightedQuickUnionUF WQUF, int succRooms) {
         int counter = 0;
-        while(!edges.isEmpty() && counter < succRooms) {
+        while (!edges.isEmpty() && counter < succRooms) {
             Edge temp = edges.poll();
             int fromInt = fringe.get(temp.getFrom());
             int toInt = fringe.get(temp.getTo());
-            if(WQUF.connected(fromInt,toInt)){
+            if (WQUF.connected(fromInt, toInt)) {
                 continue;
             }
-            WQUF.union(fromInt,toInt);
-            helperTEConnect();
+            WQUF.union(fromInt, toInt);
+            helperTEConnect(temp);
             counter += 1;
         }
     }
-    public void helperTEConnect() {
-        return;
+    public void wallConnecter(int fromX, int fromY) {
+        if (!finalWorldFrame[fromX + 1][fromY - 1].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX + 1][fromY - 1] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX - 1][fromY + 1].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX - 1][fromY + 1] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX - 1][fromY - 1].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX - 1][fromY - 1] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX + 1][fromY + 1].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX + 1][fromY + 1] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX][fromY + 1].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX][fromY + 1] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX][fromY - 1].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX][fromY - 1] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX + 1][fromY].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX + 1][fromY] = Tileset.WALL;
+        }
+        if (!finalWorldFrame[fromX - 1][fromY].equals(Tileset.FLOOR)) {
+            finalWorldFrame[fromX - 1][fromY] = Tileset.WALL;
+        }
     }
+    public void helperTEConnect(Edge edge) {
+        RoomNode from = edge.getFrom();
+        RoomNode to = edge.getTo();
+        int fromX = from.centerX;
+        int fromY = from.centerY;
+        int toX = to.centerX;
+        int toY = to.centerY;
+        while (fromX < toX) {
+            if (!finalWorldFrame[fromX][fromY].equals(Tileset.FLOOR)) {
+                finalWorldFrame[fromX][fromY] = Tileset.FLOOR;
+            }
+            wallConnecter(fromX, fromY);
+            fromX++;
+        }
+        while (fromX > toX) {
+            if (!finalWorldFrame[fromX][fromY].equals(Tileset.FLOOR)) {
+                finalWorldFrame[fromX][fromY] = Tileset.FLOOR;
+            }
+            wallConnecter(fromX, fromY);
+            fromX--;
+        }
+        while (fromY < toY) {
+            if (!finalWorldFrame[fromX][fromY].equals(Tileset.FLOOR)) {
+                finalWorldFrame[fromX][fromY] = Tileset.FLOOR;
+            }
+            wallConnecter(fromX, fromY);
+            fromY++;
+        }
+        while (fromY > toY) {
+            if (!finalWorldFrame[fromX][fromY].equals(Tileset.FLOOR)) {
+                finalWorldFrame[fromX][fromY] = Tileset.FLOOR;
+
+            }
+            wallConnecter(fromX, fromY);
+            fromY--;
+        }
+    }
+
+
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithInputString("n12345s");
+        a.interactWithInputString("n8236491749164s");
     }
 }
