@@ -102,10 +102,10 @@ public class Engine {
             }
         }
 
-        ter.initialize(WIDTH, HEIGHT);
+        //ter.initialize(WIDTH, HEIGHT);
         finalWorldFrame = new TETile[WIDTH][HEIGHT];
         createWorld(finalWorldFrame, seed);
-        ter.renderFrame(finalWorldFrame);
+        //ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
 
