@@ -4,8 +4,11 @@ import byow.InputDemo.StringInputDevice;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+import java.awt.*;
 import java.util.*;
 
 public class Engine {
@@ -55,6 +58,19 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
+        String currSeed = "";
+        Boolean isThereS = false;
+        while(!isThereS) {
+            if(StdDraw.hasNextKeyTyped()) {
+                String input = String.valueOf(StdDraw.nextKeyTyped());
+                if(input.equals("S") || input.equals("s")) {
+                    isThereS = true;
+                }
+                currSeed += input;
+            }
+        }
+        interactWithInputString(currSeed);
+
     }
 
     /**
@@ -101,11 +117,10 @@ public class Engine {
                 break;
             }
         }
-
-        //ter.initialize(WIDTH, HEIGHT);
+        ter.initialize(WIDTH, HEIGHT);
         finalWorldFrame = new TETile[WIDTH][HEIGHT];
         createWorld(finalWorldFrame, seed);
-        //ter.renderFrame(finalWorldFrame);
+        ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
 
@@ -118,7 +133,7 @@ public class Engine {
 
         Random r = new Random(seed);
         int numRooms = Math.floorMod(RandomUtils.uniform(r,
-                Integer.MAX_VALUE), 5) + 8;
+                Integer.MAX_VALUE), 5) + 15;
         PriorityQueue<Edge> edges = new PriorityQueue();
         HashMap<RoomNode, Integer> fringe = new HashMap<>();
         int successfulRooms = 0;
@@ -140,6 +155,9 @@ public class Engine {
                 }
                 fringe.put(temp, successfulRooms);
                 successfulRooms++;
+            }
+            if(successfulRooms == numRooms) {
+                array[bottomLeftX + 1][bottomLeftY + 1] = Tileset.AVATAR;
             }
         }
         WeightedQuickUnionUF wQUF = new WeightedQuickUnionUF(successfulRooms);
@@ -229,6 +247,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithInputString("n8236491749164s");
+        a.interactWithKeyboard();
     }
 }
