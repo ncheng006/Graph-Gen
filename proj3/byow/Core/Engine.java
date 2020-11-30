@@ -4,8 +4,7 @@ import byow.InputDemo.StringInputDevice;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
-import edu.princeton.cs.algs4.StdDraw;
-import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.introcs.StdDraw;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.awt.*;
@@ -70,7 +69,14 @@ public class Engine {
             }
         }
         interactWithInputString(currSeed);
-
+        while(isThereS) {
+            int xCoord = (int) StdDraw.mouseX();
+            int yCoord = (int) StdDraw.mouseY();
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.text(2,HEIGHT - 2,finalWorldFrame[xCoord][yCoord].description());
+            StdDraw.show();
+            ter.renderFrame(finalWorldFrame);
+        }
     }
 
     /**
@@ -117,7 +123,7 @@ public class Engine {
                 break;
             }
         }
-        ter.initialize(WIDTH, HEIGHT);
+        ter.initialize(WIDTH,HEIGHT);
         finalWorldFrame = new TETile[WIDTH][HEIGHT];
         createWorld(finalWorldFrame, seed);
         ter.renderFrame(finalWorldFrame);
