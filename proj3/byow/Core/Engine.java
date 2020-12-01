@@ -8,6 +8,7 @@ import edu.princeton.cs.introcs.StdDraw;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.awt.*;
+import java.io.*;
 import java.util.*;
 
 public class Engine {
@@ -90,23 +91,52 @@ public class Engine {
                 }
 
             }
-            ter.renderFrame(finalWorldFrame);
+            mouseHighlight(xCoord,yCoord);
         }
     }
+
+    public String[] loadingWorld(){
+        File worldFile = new File("byow/Core/savedFile.txt");
+        if(!worldFile.exists()) {
+            return null;
+        }
+        String[] result = new String[3];
+        try {
+            FileReader reader = new FileReader(worldFile);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String line;
+            int index = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+                result[index] = line;
+                index++;
+            }
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     public void mouseInteract(int xCoord, int yCoord) {
         if(xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
             StdDraw.setPenColor(Color.WHITE);
             StdDraw.text(2, 1, finalWorldFrame[xCoord][yCoord].description() + " " + yCoord);
             StdDraw.show();
-            TETile sub = finalWorldFrame[xCoord][yCoord];
-            finalWorldFrame[xCoord][yCoord] = new TETile(finalWorldFrame[xCoord][yCoord].character(),new Color(216, 128, 128),
-                    new Color(255, 255, 0),finalWorldFrame[xCoord][yCoord].description());
-            finalWorldFrame[xCoord][yCoord] = sub;
-            ter.renderFrame(finalWorldFrame);
+            mouseHighlight(xCoord,yCoord);
         }
     }
 
+    public void mouseHighlight(int xCoord, int yCoord){
+        if(xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
+            TETile sub = finalWorldFrame[xCoord][yCoord];
+            finalWorldFrame[xCoord][yCoord] = new TETile(finalWorldFrame[xCoord][yCoord].character(), new Color(216, 128, 128),
+                    new Color(255, 255, 0), finalWorldFrame[xCoord][yCoord].description());
+            ter.renderFrame(finalWorldFrame);
+            finalWorldFrame[xCoord][yCoord] = sub;
+        }
+    }
     /**
      * Method used for autograding and testing your
      * code. The input string will be a series
