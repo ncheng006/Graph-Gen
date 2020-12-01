@@ -9,17 +9,22 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Engine {
     private TERenderer ter = new TERenderer();
     private TETile[][] finalWorldFrame;
     private AvatarHandler av;
 
+    enum GameState { INIT, LOADING, READY, PROMPT, EXIT }
+
+    List<BlockTile> blocks = new ArrayList<>();
+
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 50;
     public static final int MAX_ROOM_WIDTH = 16;
-    public static final int MAX_ROOM_HEIGHT = 10;
+    public static final int MAX_ROOM_HEIGHT = 12;
 
     public Boolean overLap(int x, int y, int width, int height) {
         int rightWall = x + width - 1;
@@ -70,12 +75,22 @@ public class Engine {
             }
         }
         interactWithInputString(currSeed);
+        boolean colon = false;
         while(isThereS) {
             int xCoord = (int) StdDraw.mouseX();
             int yCoord = (int) StdDraw.mouseY() - 2;
             mouseInteract(xCoord,yCoord);
             if (StdDraw.hasNextKeyTyped()) {
                 char next = StdDraw.nextKeyTyped();
+
+                if (colon) {
+                    if (next == 'Q' || next == 'q') {
+                        System.out.println("save and exit");
+                        // save
+                    } else {
+                        colon = false;
+                    }
+                }
                 if (next == 'W' || next == 'w') {
                     finalWorldFrame = av.changePos(0, 1, finalWorldFrame);
                 }
@@ -87,6 +102,53 @@ public class Engine {
                 }
                 if (next == 'D' || next == 'd') {
                     finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
+                }
+                if (next == '1') {
+                    finalWorldFrame = av.changeColor(Tileset.RED, finalWorldFrame);
+                }
+                if (next == '2') {
+                    finalWorldFrame = av.changeColor(Tileset.ORANGE, finalWorldFrame);
+                }
+                if (next == '3') {
+                    finalWorldFrame = av.changeColor(Tileset.YELLOW, finalWorldFrame);
+                }
+                if (next == '4') {
+                    finalWorldFrame = av.changeColor(Tileset.LIME, finalWorldFrame);
+                }
+                if (next == '5') {
+                    finalWorldFrame = av.changeColor(Tileset.GREEN, finalWorldFrame);
+                }
+                if (next == '6') {
+                    finalWorldFrame = av.changeColor(Tileset.AQUA, finalWorldFrame);
+                }
+                if (next == '7') {
+                    finalWorldFrame = av.changeColor(Tileset.BLUE, finalWorldFrame);
+                }
+                if (next == '8') {
+                    finalWorldFrame = av.changeColor(Tileset.PURPLE, finalWorldFrame);
+                }
+                if (next == '9') {
+                    finalWorldFrame = av.changeColor(Tileset.PINK, finalWorldFrame);
+                }
+                if (next == '0') {
+                    finalWorldFrame = av.changeColor(Tileset.WHITE, finalWorldFrame);
+                }
+                if (next == ':') {
+                    colon = true;
+                }
+            }
+            for (BlockTile b : blocks) {
+                if (av.xPos == b.xPos && av.yPos == b.yPos + 1) {
+                    finalWorldFrame = b.push(0, finalWorldFrame);
+                }
+                if (av.xPos == b.xPos && av.yPos == b.yPos - 1) {
+                    finalWorldFrame = b.push(2, finalWorldFrame);
+                }
+                if (av.yPos == b.yPos && av.xPos == b.xPos + 1) {
+                    finalWorldFrame = b.push(1, finalWorldFrame);
+                }
+                if (av.yPos == b.yPos && av.xPos == b.xPos - 1) {
+                    finalWorldFrame = b.push(3, finalWorldFrame);
                 }
 
             }
@@ -136,24 +198,50 @@ public class Engine {
      */
     public TETile[][] interactWithInputString(String input) {
         StringInputDevice sid = new StringInputDevice(input);
-        boolean seedReady = false;
+        GameState gameState = GameState.INIT;
         long seed = 0;
         while (sid.possibleNextInput()) {
             char current = sid.getNextKey();
-            if (current == 'N' || current == 'n') {
-                seedReady = true;
+
+            if (gameState == GameState.PROMPT) {
+                if (current == 'Q' || current == 'q') {
+                    gameState = GameState.EXIT;
+                    System.out.println("save and exit");
+                    // save
+                } else {
+                    gameState = GameState.READY;
+                }
             }
-            if (seedReady && Character.isDigit(current)) {
+            if ((current == 'N' || current == 'n') && gameState == GameState.INIT) {
+                gameState = GameState.LOADING;
+            }
+            if (gameState == GameState.LOADING && Character.isDigit(current)) {
                 seed *= 10;
                 seed += Character.getNumericValue(current);
             }
+            if ((current == 'W' || current == 'w') && gameState == GameState.READY) {
+                finalWorldFrame = av.changePos(0, 1, finalWorldFrame);
+            }
+            if ((current == 'A' || current == 'a') && gameState == GameState.READY) {
+                finalWorldFrame = av.changePos(-1, 0, finalWorldFrame);
+            }
             if (current == 'S' || current == 's') {
-                break;
+                if (gameState == GameState.LOADING) {
+                    ter.initialize(WIDTH,HEIGHT,0,2);
+                    finalWorldFrame = new TETile[WIDTH][HEIGHT];
+                    createWorld(finalWorldFrame, seed);
+                    gameState = GameState.READY;
+                } else if (gameState == GameState.READY) {
+                    finalWorldFrame = av.changePos(0, -1, finalWorldFrame);
+                }
+            }
+            if ((current == 'D' || current == 'd') && gameState == GameState.READY) {
+                finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
+            }
+            if (current == ':' && gameState == GameState.READY) {
+                gameState = GameState.PROMPT;
             }
         }
-        ter.initialize(WIDTH,HEIGHT,0,2);
-        finalWorldFrame = new TETile[WIDTH][HEIGHT];
-        createWorld(finalWorldFrame, seed);
         ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
@@ -166,7 +254,7 @@ public class Engine {
         }
         Random r = new Random(seed);
         int numRooms = Math.floorMod(RandomUtils.uniform(r,
-                Integer.MAX_VALUE), 5) + 15;
+                Integer.MAX_VALUE), 5) + 10;
         PriorityQueue<Edge> edges = new PriorityQueue();
         HashMap<RoomNode, Integer> fringe = new HashMap<>();
         int successfulRooms = 0;
@@ -175,8 +263,8 @@ public class Engine {
                     WIDTH - MAX_ROOM_WIDTH);
             int bottomLeftY = RandomUtils.uniform(r, 0,
                     HEIGHT - MAX_ROOM_HEIGHT);
-            int width = RandomUtils.uniform(r, 4, MAX_ROOM_WIDTH);
-            int height = RandomUtils.uniform(r, 4,
+            int width = RandomUtils.uniform(r, 7, MAX_ROOM_WIDTH);
+            int height = RandomUtils.uniform(r, 7,
                     MAX_ROOM_HEIGHT);
 
             if (!overLap(bottomLeftX, bottomLeftY, width, height)) {
@@ -189,14 +277,9 @@ public class Engine {
                 fringe.put(temp, successfulRooms);
                 successfulRooms++;
             }
-            if(successfulRooms == numRooms) {
-                av = new AvatarHandler(bottomLeftX + 1, bottomLeftY + 1, Tileset.AVATAR);
-                array[bottomLeftX + 1][bottomLeftY + 1] = Tileset.AVATAR;
-            }
         }
         WeightedQuickUnionUF wQUF = new WeightedQuickUnionUF(successfulRooms);
         kruskalSolver(edges, fringe, wQUF, successfulRooms);
-
     }
 
     public void kruskalSolver(PriorityQueue<Edge> edges, HashMap<RoomNode,
@@ -211,9 +294,35 @@ public class Engine {
             }
             wQUF.union(fromInt, toInt);
             helperTEConnect(temp);
+            temp.getFrom().neighbors++;
+            temp.getTo().neighbors++;
             counter += 1;
         }
+        int startX = -1;
+        int startY = -1;
+        int goalX = -1;
+        int goalY = -1;
+
+        for (RoomNode r : fringe.keySet()) {
+            if (r.neighbors == 1 && startX == -1 && startY == -1) {
+                StartBlock sb = new StartBlock(r.centerX, r.centerY);
+                finalWorldFrame[r.centerX][r.centerY] = Tileset.ICE_BLOCK;
+                av = new AvatarHandler(r.centerX - 2, r.centerY - 2, Tileset.WHITE);
+                finalWorldFrame[r.centerX - 2][r.centerY - 2] = Tileset.WHITE;
+                blocks.add(sb);
+                startX = r.centerX;
+                startY = r.centerY;
+            } else if (r.neighbors == 1 && goalX == -1 && goalY == -1) {
+                finalWorldFrame[r.centerX][r.centerY] = Tileset.GOAL;
+                goalX = r.centerX;
+                goalY = r.centerY;
+            } else {
+                blocks.add(new HelperBlock(r.centerX, r.centerY));
+                finalWorldFrame[r.centerX][r.centerY] = Tileset.EXTRA_BLOCK;
+            }
+        }
     }
+
     public void wallConnecter(int fromX, int fromY) {
         if (!finalWorldFrame[fromX + 1][fromY - 1].equals(Tileset.FLOOR)) {
             finalWorldFrame[fromX + 1][fromY - 1] = Tileset.WALL;
@@ -271,7 +380,6 @@ public class Engine {
         while (fromY > toY) {
             if (!finalWorldFrame[fromX][fromY].equals(Tileset.FLOOR)) {
                 finalWorldFrame[fromX][fromY] = Tileset.FLOOR;
-
             }
             wallConnecter(fromX, fromY);
             fromY--;
@@ -282,5 +390,6 @@ public class Engine {
     public static void main(String[] args) {
         Engine a = new Engine();
         a.interactWithKeyboard();
+        //a.interactWithInputString("n7777swwwwwww:q");
     }
 }

@@ -1,11 +1,12 @@
 package byow.Core;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
+import org.junit.Test;
 
 public class AvatarHandler {
     private TETile displayTile;
-    private int xPos;
-    private int yPos;
+    public int xPos;
+    public int yPos;
 
     public AvatarHandler(int x, int y, TETile tile) {
         xPos = x;
@@ -16,7 +17,7 @@ public class AvatarHandler {
     public TETile[][] changePos(int xInc, int yInc, TETile[][] world) {
         int newXPos = xPos + xInc;
         int newYPos = yPos + yInc;
-        if (!(world[newXPos][newYPos].equals(Tileset.WALL))) {
+        if (world[newXPos][newYPos].equals(Tileset.FLOOR)) {
             world[xPos][yPos] = Tileset.FLOOR;
             world[newXPos][newYPos] = displayTile;
             xPos = newXPos;
@@ -25,5 +26,10 @@ public class AvatarHandler {
         return world;
     }
 
+    public TETile[][] changeColor(TETile tile, TETile[][] world) {
+        world[xPos][yPos] = tile;
+        displayTile = tile;
+        return world;
+    }
 }
 
