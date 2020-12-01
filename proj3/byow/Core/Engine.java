@@ -13,6 +13,7 @@ import java.util.*;
 public class Engine {
     private TERenderer ter = new TERenderer();
     private TETile[][] finalWorldFrame;
+    private AvatarHandler av;
 
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
@@ -58,7 +59,7 @@ public class Engine {
      */
     public void interactWithKeyboard() {
         String currSeed = "";
-        Boolean isThereS = false;
+        boolean isThereS = false;
         while(!isThereS) {
             if(StdDraw.hasNextKeyTyped()) {
                 String input = String.valueOf(StdDraw.nextKeyTyped());
@@ -73,6 +74,23 @@ public class Engine {
             int xCoord = (int) StdDraw.mouseX();
             int yCoord = (int) StdDraw.mouseY() - 2;
             mouseInteract(xCoord,yCoord);
+            if (StdDraw.hasNextKeyTyped()) {
+                char next = StdDraw.nextKeyTyped();
+                if (next == 'W' || next == 'w') {
+                    finalWorldFrame = av.changePos(0, 1, finalWorldFrame);
+                }
+                if (next == 'A' || next == 'a') {
+                    finalWorldFrame = av.changePos(-1, 0, finalWorldFrame);
+                }
+                if (next == 'S' || next == 's') {
+                    finalWorldFrame = av.changePos(0, -1, finalWorldFrame);
+                }
+                if (next == 'D' || next == 'd') {
+                    finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
+                }
+
+            }
+            ter.renderFrame(finalWorldFrame);
         }
     }
 
@@ -84,8 +102,8 @@ public class Engine {
             TETile sub = finalWorldFrame[xCoord][yCoord];
             finalWorldFrame[xCoord][yCoord] = new TETile(finalWorldFrame[xCoord][yCoord].character(),new Color(216, 128, 128),
                     new Color(255, 255, 0),finalWorldFrame[xCoord][yCoord].description());
-            ter.renderFrame(finalWorldFrame);
             finalWorldFrame[xCoord][yCoord] = sub;
+            ter.renderFrame(finalWorldFrame);
         }
     }
 
@@ -172,6 +190,7 @@ public class Engine {
                 successfulRooms++;
             }
             if(successfulRooms == numRooms) {
+                av = new AvatarHandler(bottomLeftX + 1, bottomLeftY + 1, Tileset.AVATAR);
                 array[bottomLeftX + 1][bottomLeftY + 1] = Tileset.AVATAR;
             }
         }
