@@ -71,11 +71,21 @@ public class Engine {
         interactWithInputString(currSeed);
         while(isThereS) {
             int xCoord = (int) StdDraw.mouseX();
-            int yCoord = (int) StdDraw.mouseY();
+            int yCoord = (int) StdDraw.mouseY() - 2;
+            mouseInteract(xCoord,yCoord);
+        }
+    }
+
+    public void mouseInteract(int xCoord, int yCoord) {
+        if(xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
             StdDraw.setPenColor(Color.WHITE);
-            StdDraw.text(2,HEIGHT - 2,finalWorldFrame[xCoord][yCoord].description());
+            StdDraw.text(2, 1, finalWorldFrame[xCoord][yCoord].description() + " " + yCoord);
             StdDraw.show();
+            TETile sub = finalWorldFrame[xCoord][yCoord];
+            finalWorldFrame[xCoord][yCoord] = new TETile(finalWorldFrame[xCoord][yCoord].character(),new Color(216, 128, 128),
+                    new Color(255, 255, 0),finalWorldFrame[xCoord][yCoord].description());
             ter.renderFrame(finalWorldFrame);
+            finalWorldFrame[xCoord][yCoord] = sub;
         }
     }
 
@@ -123,7 +133,7 @@ public class Engine {
                 break;
             }
         }
-        ter.initialize(WIDTH,HEIGHT);
+        ter.initialize(WIDTH,HEIGHT,0,2);
         finalWorldFrame = new TETile[WIDTH][HEIGHT];
         createWorld(finalWorldFrame, seed);
         ter.renderFrame(finalWorldFrame);
@@ -136,7 +146,6 @@ public class Engine {
                 array[x][y] = Tileset.NOTHING;
             }
         }
-
         Random r = new Random(seed);
         int numRooms = Math.floorMod(RandomUtils.uniform(r,
                 Integer.MAX_VALUE), 5) + 15;
