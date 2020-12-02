@@ -87,7 +87,7 @@ public class Engine {
                     String[] extractData = loadingWorld();
                     currSeed = extractData[0];
                     replay = true;
-                    //ter.initialize(WIDTH,HEIGHT,0,2);
+                    ter.initialize(WIDTH,HEIGHT,0,2);
                     interactWithInputString(currSeed);
                     createMainMenu();
                     continue;
@@ -100,12 +100,12 @@ public class Engine {
                     wasNPressed = true;
                 }
                 if (input.equals("Q") || input.equals("q")) {
-                    //System.exit(0);
+                    System.exit(0);
                 }
                 currSeed += input;
             }
         }
-        //ter.initialize(WIDTH,HEIGHT,0,2);
+        ter.initialize(WIDTH,HEIGHT,0,2);
         interactWithInputString(currSeed);
         boolean colon = false;
         while (isThereS) {
@@ -132,6 +132,36 @@ public class Engine {
                 }
                 if (next == 'D' || next == 'd') {
                     finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
+                }
+                if (next == '1') {
+                    finalWorldFrame = av.changeColor(Tileset.RED, finalWorldFrame);
+                }
+                if (next == '2') {
+                    finalWorldFrame = av.changeColor(Tileset.ORANGE, finalWorldFrame);
+                }
+                if (next == '3') {
+                    finalWorldFrame = av.changeColor(Tileset.YELLOW, finalWorldFrame);
+                }
+                if (next == '4') {
+                    finalWorldFrame = av.changeColor(Tileset.LIME, finalWorldFrame);
+                }
+                if (next == '5') {
+                    finalWorldFrame = av.changeColor(Tileset.GREEN, finalWorldFrame);
+                }
+                if (next == '6') {
+                    finalWorldFrame = av.changeColor(Tileset.AQUA, finalWorldFrame);
+                }
+                if (next == '7') {
+                    finalWorldFrame = av.changeColor(Tileset.BLUE, finalWorldFrame);
+                }
+                if (next == '8') {
+                    finalWorldFrame = av.changeColor(Tileset.PURPLE, finalWorldFrame);
+                }
+                if (next == '9') {
+                    finalWorldFrame = av.changeColor(Tileset.PINK, finalWorldFrame);
+                }
+                if (next == '0') {
+                    finalWorldFrame = av.changeColor(Tileset.WHITE, finalWorldFrame);
                 }
                 if ((next == 'H' || next == 'h') && frees > 0
                         && av.getRelativeTile(0, 2, finalWorldFrame).equals(Tileset.FLOOR)) {
@@ -262,7 +292,7 @@ public class Engine {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //System.exit(0);
+        System.exit(0);
     }
 
     private String saver;
@@ -311,7 +341,6 @@ public class Engine {
             if ((current == 'L' || current == 'l') && gameState == gameState.INIT) {
                 String[] sub = loadingWorld();
                 finalWorldFrame = new TETile[WIDTH][HEIGHT];
-                //color = colorArray[Integer.parseInt(sub[1])];
                 interactWithInputString(sub[0]);
             }
             if ((current == 'N' || current == 'n') && gameState == GameState.INIT) {
@@ -332,10 +361,10 @@ public class Engine {
             }
             if (current == 'S' || current == 's') {
                 if (gameState == GameState.LOADING) {
-                    //ter.initialize(WIDTH, HEIGHT);
+                    ter.initialize(WIDTH, HEIGHT);
                     finalWorldFrame = new TETile[WIDTH][HEIGHT];
                     createWorld(finalWorldFrame, seed);
-                    //ter.renderFrame(finalWorldFrame);
+                    ter.renderFrame(finalWorldFrame);
                     saver += seed;
                     saver += current;
                     gameState = GameState.READY;

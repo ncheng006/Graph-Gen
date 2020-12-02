@@ -25,6 +25,12 @@ public class AvatarHandler {
         return world;
     }
 
+    public TETile[][] changeColor(TETile t, TETile[][] world) {
+        world[xPos][yPos] = t;
+        displayTile = t;
+        return world;
+    }
+
     public TETile getRelativeTile(int offsetX, int offsetY, TETile[][] world) {
         return world[xPos + offsetX][yPos + offsetY];
     }
