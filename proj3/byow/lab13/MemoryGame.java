@@ -59,11 +59,7 @@ public class MemoryGame {
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
         //TODO: If game is not over, display relevant game information at the top of the screen
-        StdDraw.clear();
-        Font font = new Font("Monaco", Font.BOLD, 30);
-        StdDraw.setFont(font);
-        StdDraw.text(width/2,height/2,s);
-        StdDraw.show();
+        return;
     }
 
     public void flashSequence(String letters){
@@ -96,14 +92,7 @@ public class MemoryGame {
 
     public void startGame() {
         //TODO: Set any relevant variables before the game starts
-        int ran = 5;
-        drawFrame("Round: ");
-        String result = generateRandomString(ran);
-        flashSequence(result);
-        String answer = solicitNCharsInput(result.length());
-        if(result.equals(answer)) {
-            System.out.println("good");
-        }
+        drawFrame("bruh");
         //TODO: Establish Engine loop
     }
 

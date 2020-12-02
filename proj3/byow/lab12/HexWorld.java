@@ -49,11 +49,11 @@ public class HexWorld {
     private static TETile randomTile() {
         int tileNum = RANDOM.nextInt(4);
         switch (tileNum) {
-            case 0: return Tileset.TREE;
-            case 1: return Tileset.FLOWER;
-            case 2: return Tileset.GRASS;
-            case 3: return Tileset.MOUNTAIN;
-            default: return Tileset.FLOWER;
+            case 0: return Tileset.RED;
+            case 1: return Tileset.YELLOW;
+            case 2: return Tileset.GREEN;
+            case 3: return Tileset.BLUE;
+            default: return Tileset.WHITE;
         }
     }
 
