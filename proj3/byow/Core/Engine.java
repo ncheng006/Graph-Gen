@@ -100,7 +100,7 @@ public class Engine {
                     wasNPressed = true;
                 }
                 if (input.equals("Q") || input.equals("q")) {
-                    System.exit(0);
+                    //System.exit(0);
                 }
                 currSeed += input;
             }
@@ -161,7 +161,6 @@ public class Engine {
         StdDraw.text(20,30,"(L) Load Game");
         StdDraw.text(20,25,"(Q) Quit Game");
         StdDraw.text(20,20,"(R) Reload Game");
-        StdDraw.text(20,20,"(A) Set Color");
         StdDraw.show();
     }
 
@@ -173,7 +172,6 @@ public class Engine {
         StdDraw.text(20,30,"(L) Load Game");
         StdDraw.text(20,25,"(Q) Quit Game");
         StdDraw.text(20,20,"(R) Reload Game");
-        StdDraw.text(20,20,"(A) Set Color");
         StdDraw.show();
         StdDraw.text(20,15,"Seed");
         seedNum += input;
@@ -263,7 +261,7 @@ public class Engine {
         catch (IOException e) {
             e.printStackTrace();
         }
-        System.exit(0);
+        //System.exit(0);
     }
 
     private String saver;
@@ -363,7 +361,7 @@ public class Engine {
             checkBlockPusher();
             if (finalWorldFrame != null && replay) {
                 StdDraw.pause(500);
-                //ter.renderFrame(finalWorldFrame);
+                ter.renderFrame(finalWorldFrame);
             }
         }
         replay = false;
@@ -515,6 +513,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithInputString("n7193300625454684331saaawasdaawdwsd");
+        a.interactWithKeyboard();
     }
 }
