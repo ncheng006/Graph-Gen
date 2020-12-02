@@ -3,8 +3,6 @@ package byow.Core;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 
-import java.util.Arrays;
-
 public class BlockTile {
     public int xPos;
     public int yPos;

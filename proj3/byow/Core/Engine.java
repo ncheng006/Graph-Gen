@@ -86,8 +86,7 @@ public class Engine {
                 } else if (input.equals("R") || input.equals("r")) {
                     String[] extractData = loadingWorld();
                     currSeed = extractData[0];
-                    replay = true;
-                    //ter.initialize(WIDTH,HEIGHT,0,2);
+                    replay = true;ter.initialize(WIDTH,HEIGHT,0,2);
                     interactWithInputString(currSeed);
                     createMainMenu();
                     continue;
@@ -100,12 +99,12 @@ public class Engine {
                     wasNPressed = true;
                 }
                 if (input.equals("Q") || input.equals("q")) {
-                    //System.exit(0);
+                    System.exit(0);
                 }
                 currSeed += input;
             }
         }
-        //ter.initialize(WIDTH,HEIGHT,0,2);
+        ter.initialize(WIDTH,HEIGHT,0,2);
         interactWithInputString(currSeed);
         boolean colon = false;
         while (isThereS) {
@@ -116,7 +115,6 @@ public class Engine {
                 char next = StdDraw.nextKeyTyped();
                 if (colon) {
                     if (next == 'Q' || next == 'q') {
-                        System.out.println("save and exit");
                         saveWorld(saver);
                     } else {
                         colon = false;
@@ -241,7 +239,7 @@ public class Engine {
             TETile sub = finalWorldFrame[xCoord][yCoord];
             finalWorldFrame[xCoord][yCoord] = new TETile(finalWorldFrame[xCoord][yCoord].character(), new Color(216, 128, 128),
                     new Color(255, 255, 0), finalWorldFrame[xCoord][yCoord].description());
-            //ter.renderFrame(finalWorldFrame);
+            ter.renderFrame(finalWorldFrame);
             finalWorldFrame[xCoord][yCoord] = sub;
         }
     }
@@ -258,12 +256,11 @@ public class Engine {
             BufferedWriter out = new BufferedWriter(new FileWriter(worldFile));
             out.write(s);
             out.close();
-            System.out.println("File created successfully");
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        //System.exit(0);
+        System.exit(0);
     }
 
     private String saver;
@@ -304,7 +301,6 @@ public class Engine {
             if (gameState == GameState.PROMPT) {
                 if (current == 'Q' || current == 'q') {
                     gameState = GameState.EXIT;
-                    System.out.println("save and exit");
                     saveWorld(saver);
                 } else {
                     gameState = GameState.READY;
@@ -334,10 +330,10 @@ public class Engine {
             }
             if (current == 'S' || current == 's') {
                 if (gameState == GameState.LOADING) {
-                    //ter.initialize(WIDTH, HEIGHT);
+                    ter.initialize(WIDTH, HEIGHT);
                     finalWorldFrame = new TETile[WIDTH][HEIGHT];
                     createWorld(finalWorldFrame, seed);
-                    //ter.renderFrame(finalWorldFrame);
+                    ter.renderFrame(finalWorldFrame);
                     saver += seed;
                     saver += current;
                     gameState = GameState.READY;
@@ -516,7 +512,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithKeyboard();
-        //a.interactWithInputString("l");
+        a.interactWithInputString("n7193300625454684331saaawasdaawdwsd");
     }
 }

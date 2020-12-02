@@ -1,7 +1,6 @@
 package byow.Core;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
-import org.junit.Test;
 
 public class AvatarHandler {
     private TETile displayTile;
