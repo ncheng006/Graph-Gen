@@ -12,7 +12,6 @@ public class BlockTile {
 
     public TETile[][] push(int dir, TETile[][] world) { // 0 = south, 1 = west, 2 = north, 3 = east
         dir = Math.floorMod(dir, 4);
-        System.out.println(xPos + "," + yPos);
         if (dir % 2 == 0) {
             while (world[xPos][yPos + dir - 1].equals(Tileset.FLOOR)) {
                 int newYPos = yPos + dir - 1;
@@ -33,7 +32,6 @@ public class BlockTile {
 
     public TETile[][] nudge(int dir, TETile[][] world) {
         dir = Math.floorMod(dir, 4);
-        System.out.println(xPos + "," + yPos);
         if (dir % 2 == 0) {
             if (world[xPos][yPos + dir - 1].equals(Tileset.FLOOR)) {
                 int newYPos = yPos + dir - 1;

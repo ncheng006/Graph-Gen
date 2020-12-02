@@ -17,8 +17,8 @@ public class Engine {
     private TETile[][] finalWorldFrame;
     private AvatarHandler av;
     private StartBlock sb;
-    private Boolean replay;
 
+    boolean replay = false;
     enum GameState { INIT, LOADING, READY, PROMPT, EXIT }
     List<BlockTile> blocks = new ArrayList<>();
     int frees = 5;
