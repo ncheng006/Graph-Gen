@@ -84,6 +84,7 @@ public class Engine {
                     String[] extractData = loadingWorld();
                     currSeed = extractData[0];
                     replay = true;
+                    ter.initialize(WIDTH,HEIGHT,0,2);
                     interactWithInputString(currSeed);
                     createMainMenu();
                     continue;
@@ -101,6 +102,7 @@ public class Engine {
                 currSeed += input;
             }
         }
+        ter.initialize(WIDTH,HEIGHT,0,2);
         interactWithInputString(currSeed);
         boolean colon = false;
         while(isThereS) {
@@ -313,7 +315,6 @@ public class Engine {
             }
             if (current == 'S' || current == 's') {
                 if (gameState == GameState.LOADING) {
-                    ter.initialize(WIDTH,HEIGHT,0,2);
                     finalWorldFrame = new TETile[WIDTH][HEIGHT];
                     createWorld(finalWorldFrame, seed);
                     gameState = GameState.READY;
