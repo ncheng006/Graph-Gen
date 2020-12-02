@@ -92,10 +92,10 @@ public class Engine {
                     createMainMenu();
                     continue;
                 } else if (wasNPressed) {
-                    seedNum += seedChanges(seedNum,input);
+                    seedNum += seedChanges(seedNum, input);
                 }
                 if (input.equals("N") || input.equals("n")) {
-                    StdDraw.text(20,15,"Seed");
+                    StdDraw.text(20, 15, "Seed");
                     StdDraw.show();
                     wasNPressed = true;
                 }
@@ -111,7 +111,7 @@ public class Engine {
         while (isThereS) {
             int xCoord = (int) StdDraw.mouseX();
             int yCoord = (int) StdDraw.mouseY() - 2;
-            mouseInteract(xCoord,yCoord);
+            mouseInteract(xCoord, yCoord);
             if (StdDraw.hasNextKeyTyped()) {
                 char next = StdDraw.nextKeyTyped();
                 if (colon) {
@@ -144,7 +144,7 @@ public class Engine {
                 }
             }
             checkBlockPusher();
-            mouseHighlight(xCoord,yCoord);
+            mouseHighlight(xCoord, yCoord);
         }
     }
 
@@ -157,10 +157,10 @@ public class Engine {
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
         StdDraw.setPenColor(Color.WHITE);
-        StdDraw.text(20,35,"(N) New Game");
-        StdDraw.text(20,30,"(L) Load Game");
-        StdDraw.text(20,25,"(Q) Quit Game");
-        StdDraw.text(20,20,"(R) Reload Game");
+        StdDraw.text(20, 35, "(N) New Game");
+        StdDraw.text(20, 30, "(L) Load Game");
+        StdDraw.text(20, 25, "(Q) Quit Game");
+        StdDraw.text(20, 20, "(R) Reload Game");
         StdDraw.show();
     }
 
@@ -168,14 +168,14 @@ public class Engine {
         StdDraw.clear(Color.BLACK);
         StdDraw.enableDoubleBuffering();
         StdDraw.setPenColor(Color.WHITE);
-        StdDraw.text(20,35,"(N) New Game");
-        StdDraw.text(20,30,"(L) Load Game");
-        StdDraw.text(20,25,"(Q) Quit Game");
-        StdDraw.text(20,20,"(R) Reload Game");
+        StdDraw.text(20, 35, "(N) New Game");
+        StdDraw.text(20, 30, "(L) Load Game");
+        StdDraw.text(20, 25, "(Q) Quit Game");
+        StdDraw.text(20, 20, "(R) Reload Game");
         StdDraw.show();
-        StdDraw.text(20,15,"Seed");
+        StdDraw.text(20, 15, "Seed");
         seedNum += input;
-        StdDraw.text(20,10,seedNum);
+        StdDraw.text(20, 10, seedNum);
         StdDraw.show();
         StdDraw.clear();
         return input;
@@ -199,9 +199,9 @@ public class Engine {
             }
         }
     }
-    public String[] loadingWorld(){
+    public String[] loadingWorld() {
         File worldFile = new File("byow/Core/savedFile.txt");
-        if(!worldFile.exists()) {
+        if (!worldFile.exists()) {
             return null;
         }
         String[] result = new String[3];
@@ -223,20 +223,22 @@ public class Engine {
 
 
     public void mouseInteract(int xCoord, int yCoord) {
-        if(xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
+        if (xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
             StdDraw.setPenColor(Color.WHITE);
             if (goalReached) {
                 StdDraw.text(2, 1, "Goal Reached!");
             } else {
-                StdDraw.text(2, 1, finalWorldFrame[xCoord][yCoord].description() + " - You have " + frees + " extra helper blocks left.");
+                StdDraw.text(2, 1,
+                        finalWorldFrame[xCoord][yCoord].description() + " - You have " + frees +
+                                " extra helper blocks left.");
             }
             StdDraw.show();
-            mouseHighlight(xCoord,yCoord);
+            mouseHighlight(xCoord, yCoord);
         }
     }
 
-    public void mouseHighlight(int xCoord, int yCoord){
-        if(xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
+    public void mouseHighlight(int xCoord, int yCoord) {
+        if (xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
             TETile sub = finalWorldFrame[xCoord][yCoord];
             finalWorldFrame[xCoord][yCoord] = new TETile(finalWorldFrame[xCoord][yCoord].character(), new Color(216, 128, 128),
                     new Color(255, 255, 0), finalWorldFrame[xCoord][yCoord].description());
@@ -257,8 +259,7 @@ public class Engine {
             BufferedWriter out = new BufferedWriter(new FileWriter(worldFile));
             out.write(s);
             out.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         //System.exit(0);
