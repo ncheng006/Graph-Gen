@@ -100,7 +100,7 @@ public class Engine {
                     wasNPressed = true;
                 }
                 if (input.equals("Q") || input.equals("q")) {
-                    System.exit(0);
+                    //System.exit(0);
                 }
                 currSeed += input;
             }
@@ -263,7 +263,7 @@ public class Engine {
         catch (IOException e) {
             e.printStackTrace();
         }
-        System.exit(0);
+        //System.exit(0);
     }
 
     private String saver;
@@ -362,6 +362,10 @@ public class Engine {
                 gameState = GameState.PROMPT;
             }
             checkBlockPusher();
+        }
+        if (finalWorldFrame != null && replay) {
+            StdDraw.pause(500);
+            ter.renderFrame(finalWorldFrame);
         }
         replay = false;
         return finalWorldFrame;
