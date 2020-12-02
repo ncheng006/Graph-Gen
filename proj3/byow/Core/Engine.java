@@ -359,7 +359,6 @@ public class Engine {
             }
             checkBlockPusher();
         }
-        ter.renderFrame(finalWorldFrame);
         replay = false;
         return finalWorldFrame;
     }
