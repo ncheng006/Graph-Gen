@@ -16,10 +16,13 @@ public class Engine {
     private TERenderer ter = new TERenderer();
     private TETile[][] finalWorldFrame;
     private AvatarHandler av;
+    private StartBlock sb;
     private Boolean replay;
-    enum GameState { INIT, LOADING, READY, PROMPT, EXIT }
 
+    enum GameState { INIT, LOADING, READY, PROMPT, EXIT }
     List<BlockTile> blocks = new ArrayList<>();
+    int frees = 5;
+    boolean goalReached = false;
 
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
@@ -131,35 +134,11 @@ public class Engine {
                 if (next == 'D' || next == 'd') {
                     finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
                 }
-                if (next == '1') {
-                    finalWorldFrame = av.changeColor(Tileset.RED, finalWorldFrame);
-                }
-                if (next == '2') {
-                    finalWorldFrame = av.changeColor(Tileset.ORANGE, finalWorldFrame);
-                }
-                if (next == '3') {
-                    finalWorldFrame = av.changeColor(Tileset.YELLOW, finalWorldFrame);
-                }
-                if (next == '4') {
-                    finalWorldFrame = av.changeColor(Tileset.LIME, finalWorldFrame);
-                }
-                if (next == '5') {
-                    finalWorldFrame = av.changeColor(Tileset.GREEN, finalWorldFrame);
-                }
-                if (next == '6') {
-                    finalWorldFrame = av.changeColor(Tileset.AQUA, finalWorldFrame);
-                }
-                if (next == '7') {
-                    finalWorldFrame = av.changeColor(Tileset.BLUE, finalWorldFrame);
-                }
-                if (next == '8') {
-                    finalWorldFrame = av.changeColor(Tileset.PURPLE, finalWorldFrame);
-                }
-                if (next == '9') {
-                    finalWorldFrame = av.changeColor(Tileset.PINK, finalWorldFrame);
-                }
-                if (next == '0') {
-                    finalWorldFrame = av.changeColor(Tileset.WHITE, finalWorldFrame);
+                if ((next == 'H' || next == 'h') && frees > 0
+                        && av.getRelativeTile(0, 2, finalWorldFrame).equals(Tileset.FLOOR)) {
+                    blocks.add(new HelperBlock(av.xPos, av.yPos + 2));
+                    finalWorldFrame[av.xPos][av.yPos + 2] = Tileset.EXTRA_BLOCK;
+                    frees--;
                 }
                 if (next == ':') {
                     colon = true;
@@ -214,6 +193,9 @@ public class Engine {
             if (av.yPos == b.yPos && av.xPos == b.xPos - 1) {
                 finalWorldFrame = b.push(3, finalWorldFrame);
             }
+            if (false) {
+                goalReached = true;
+            }
         }
     }
     public String[] loadingWorld(){
@@ -243,7 +225,11 @@ public class Engine {
     public void mouseInteract(int xCoord, int yCoord) {
         if(xCoord < WIDTH && xCoord >= 0 && yCoord < HEIGHT && yCoord >= 0) {
             StdDraw.setPenColor(Color.WHITE);
-            StdDraw.text(2, 1, finalWorldFrame[xCoord][yCoord].description() + " " + yCoord);
+            if (goalReached) {
+                StdDraw.text(2, 1, "Goal Reached!");
+            } else {
+                StdDraw.text(2, 1, finalWorldFrame[xCoord][yCoord].description() + " - You have " + frees + " extra helper blocks left.");
+            }
             StdDraw.show();
             mouseHighlight(xCoord,yCoord);
         }
@@ -315,8 +301,10 @@ public class Engine {
             }
             if (current == 'S' || current == 's') {
                 if (gameState == GameState.LOADING) {
+                    ter.initialize(WIDTH, HEIGHT);
                     finalWorldFrame = new TETile[WIDTH][HEIGHT];
                     createWorld(finalWorldFrame, seed);
+                    ter.renderFrame(finalWorldFrame);
                     gameState = GameState.READY;
                 } else if (gameState == GameState.READY) {
                     finalWorldFrame = av.changePos(0, -1, finalWorldFrame);
@@ -325,35 +313,11 @@ public class Engine {
             if ((current == 'D' || current == 'd') && gameState == GameState.READY) {
                 finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
             }
-            if (current == '1' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.RED, finalWorldFrame);
-            }
-            if (current == '2' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.ORANGE, finalWorldFrame);
-            }
-            if (current == '3' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.YELLOW, finalWorldFrame);
-            }
-            if (current == '4' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.LIME, finalWorldFrame);
-            }
-            if (current == '5' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.GREEN, finalWorldFrame);
-            }
-            if (current == '6' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.AQUA, finalWorldFrame);
-            }
-            if (current == '7' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.BLUE, finalWorldFrame);
-            }
-            if (current == '8' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.PURPLE, finalWorldFrame);
-            }
-            if (current == '9' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.PINK, finalWorldFrame);
-            }
-            if (current == '0' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.WHITE, finalWorldFrame);
+            if ((current == 'H' || current == 'h') && gameState == GameState.READY && frees > 0
+                    && av.getRelativeTile(0, 2, finalWorldFrame).equals(Tileset.FLOOR)) {
+                blocks.add(new HelperBlock(av.xPos, av.yPos + 2));
+                finalWorldFrame[av.xPos][av.yPos + 2] = Tileset.EXTRA_BLOCK;
+                frees--;
             }
             if (current == ':' && gameState == GameState.READY) {
                 gameState = GameState.PROMPT;
@@ -374,7 +338,7 @@ public class Engine {
         int numRooms = Math.floorMod(RandomUtils.uniform(r,
                 Integer.MAX_VALUE), 5) + 10;
         PriorityQueue<Edge> edges = new PriorityQueue();
-        HashMap<RoomNode, Integer> fringe = new HashMap<>();
+        HashMap<RoomNode, Integer> fringe = new LinkedHashMap<>();
         int successfulRooms = 0;
         while (successfulRooms < numRooms) {
             int bottomLeftX = RandomUtils.uniform(r, 0,
@@ -420,10 +384,11 @@ public class Engine {
         int startY = -1;
         int goalX = -1;
         int goalY = -1;
+        int i = 0;
 
         for (RoomNode r : fringe.keySet()) {
             if (r.neighbors == 1 && startX == -1 && startY == -1) {
-                StartBlock sb = new StartBlock(r.centerX, r.centerY);
+                sb = new StartBlock(r.centerX, r.centerY);
                 finalWorldFrame[r.centerX][r.centerY] = Tileset.ICE_BLOCK;
                 av = new AvatarHandler(r.centerX - 2, r.centerY - 2, Tileset.WHITE);
                 finalWorldFrame[r.centerX - 2][r.centerY - 2] = Tileset.WHITE;
@@ -438,6 +403,7 @@ public class Engine {
                 blocks.add(new HelperBlock(r.centerX, r.centerY));
                 finalWorldFrame[r.centerX][r.centerY] = Tileset.EXTRA_BLOCK;
             }
+            i++;
         }
     }
 
@@ -507,7 +473,7 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine a = new Engine();
-        a.interactWithKeyboard();
-        //a.interactWithInputString("n7777s123123123:q");
+        //a.interactWithKeyboard();
+        a.interactWithInputString("n7777s123123123");
     }
 }
