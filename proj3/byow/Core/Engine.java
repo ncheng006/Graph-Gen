@@ -86,7 +86,8 @@ public class Engine {
                 } else if (input.equals("R") || input.equals("r")) {
                     String[] extractData = loadingWorld();
                     currSeed = extractData[0];
-                    replay = true;ter.initialize(WIDTH,HEIGHT,0,2);
+                    replay = true;
+                    //ter.initialize(WIDTH,HEIGHT,0,2);
                     interactWithInputString(currSeed);
                     createMainMenu();
                     continue;
@@ -104,7 +105,7 @@ public class Engine {
                 currSeed += input;
             }
         }
-        ter.initialize(WIDTH,HEIGHT,0,2);
+        //ter.initialize(WIDTH,HEIGHT,0,2);
         interactWithInputString(currSeed);
         boolean colon = false;
         while (isThereS) {
@@ -160,6 +161,7 @@ public class Engine {
         StdDraw.text(20,30,"(L) Load Game");
         StdDraw.text(20,25,"(Q) Quit Game");
         StdDraw.text(20,20,"(R) Reload Game");
+        StdDraw.text(20,20,"(A) Set Color");
         StdDraw.show();
     }
 
@@ -171,6 +173,7 @@ public class Engine {
         StdDraw.text(20,30,"(L) Load Game");
         StdDraw.text(20,25,"(Q) Quit Game");
         StdDraw.text(20,20,"(R) Reload Game");
+        StdDraw.text(20,20,"(A) Set Color");
         StdDraw.show();
         StdDraw.text(20,15,"Seed");
         seedNum += input;
@@ -330,10 +333,10 @@ public class Engine {
             }
             if (current == 'S' || current == 's') {
                 if (gameState == GameState.LOADING) {
-                    ter.initialize(WIDTH, HEIGHT);
+                    //ter.initialize(WIDTH, HEIGHT);
                     finalWorldFrame = new TETile[WIDTH][HEIGHT];
                     createWorld(finalWorldFrame, seed);
-                    ter.renderFrame(finalWorldFrame);
+                    //ter.renderFrame(finalWorldFrame);
                     saver += seed;
                     saver += current;
                     gameState = GameState.READY;
@@ -358,10 +361,10 @@ public class Engine {
                 gameState = GameState.PROMPT;
             }
             checkBlockPusher();
-        }
-        if (finalWorldFrame != null && replay) {
-            StdDraw.pause(500);
-            ter.renderFrame(finalWorldFrame);
+            if (finalWorldFrame != null && replay) {
+                StdDraw.pause(500);
+                //ter.renderFrame(finalWorldFrame);
+            }
         }
         replay = false;
         return finalWorldFrame;
