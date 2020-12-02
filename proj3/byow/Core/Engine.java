@@ -17,6 +17,7 @@ public class Engine {
     private TETile[][] finalWorldFrame;
     private AvatarHandler av;
     private Boolean replay;
+    private TETile color;
     enum GameState { INIT, LOADING, READY, PROMPT, EXIT }
 
     List<BlockTile> blocks = new ArrayList<>();
@@ -64,6 +65,8 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
+        boolean isThereA = false;
+        color = Tileset.WHITE;
         replay = false;
         String currSeed = "";
         boolean isThereS = false;
@@ -73,6 +76,45 @@ public class Engine {
         while(!isThereS) {
             if(StdDraw.hasNextKeyTyped()) {
                 String input = String.valueOf(StdDraw.nextKeyTyped());
+                if(input.equals("A") || input.equals("a")) {
+                    isThereA = true;
+                    createAvatarMenu();
+                    while(isThereA) {
+                        if(StdDraw.hasNextKeyTyped()) {
+                            createAvatarMenu();
+                            StdDraw.text(20,20,"Confirm by pressing A Again");
+                            StdDraw.show();
+                            String input1 = String.valueOf(StdDraw.nextKeyTyped());
+                            if(input1.equals("A") || input1.equals("a")) {
+                                isThereA = false;
+                                break;
+                            }
+                            if (input1.equals("1")) {
+                                color = Tileset.RED;
+                            }
+                            if (input1.equals("2")) {
+                                color = Tileset.ORANGE;
+                            }
+                            if (input1.equals("3")) {
+                                color = Tileset.YELLOW;
+                            }
+                            if (input1.equals("4")) {
+                                color = Tileset.GREEN;
+                            }
+                            if (input1.equals("5")) {
+                                color = Tileset.BLUE;
+                            }
+                            if (input1.equals("6")) {
+                                color = Tileset.PINK;
+                            }
+                            if (input1.equals("7")) {
+                                color = Tileset.WHITE;
+                            }
+                        }
+                    }
+                    System.out.println("done");
+                    createMainMenu();
+                }
                 if(input.equals("S") || input.equals("s")) {
                     isThereS = true;
                 } else if(input.equals("L") || input.equals("l")) {
@@ -131,36 +173,6 @@ public class Engine {
                 if (next == 'D' || next == 'd') {
                     finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
                 }
-                if (next == '1') {
-                    finalWorldFrame = av.changeColor(Tileset.RED, finalWorldFrame);
-                }
-                if (next == '2') {
-                    finalWorldFrame = av.changeColor(Tileset.ORANGE, finalWorldFrame);
-                }
-                if (next == '3') {
-                    finalWorldFrame = av.changeColor(Tileset.YELLOW, finalWorldFrame);
-                }
-                if (next == '4') {
-                    finalWorldFrame = av.changeColor(Tileset.LIME, finalWorldFrame);
-                }
-                if (next == '5') {
-                    finalWorldFrame = av.changeColor(Tileset.GREEN, finalWorldFrame);
-                }
-                if (next == '6') {
-                    finalWorldFrame = av.changeColor(Tileset.AQUA, finalWorldFrame);
-                }
-                if (next == '7') {
-                    finalWorldFrame = av.changeColor(Tileset.BLUE, finalWorldFrame);
-                }
-                if (next == '8') {
-                    finalWorldFrame = av.changeColor(Tileset.PURPLE, finalWorldFrame);
-                }
-                if (next == '9') {
-                    finalWorldFrame = av.changeColor(Tileset.PINK, finalWorldFrame);
-                }
-                if (next == '0') {
-                    finalWorldFrame = av.changeColor(Tileset.WHITE, finalWorldFrame);
-                }
                 if (next == ':') {
                     colon = true;
                 }
@@ -168,6 +180,39 @@ public class Engine {
             checkBlockPusher();
             mouseHighlight(xCoord,yCoord);
         }
+    }
+
+    public void createAvatarMenu() {
+        StdDraw.setCanvasSize(40 * 16, 40 * 16);
+        Font font = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(font);
+        StdDraw.setXscale(0, 40);
+        StdDraw.setYscale(0, 40);
+        StdDraw.clear(Color.BLACK);
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setPenColor(Color.RED);
+        StdDraw.square(8,40-4,2);
+        StdDraw.text(8,40-4,"1");
+        StdDraw.setPenColor(Color.ORANGE);
+        StdDraw.square(12,40-4,2);
+        StdDraw.text(12,40-4,"2");
+        StdDraw.setPenColor(Color.YELLOW);
+        StdDraw.square(16,40-4,2);
+        StdDraw.text(16,40-4,"3");
+        StdDraw.setPenColor(Color.GREEN);
+        StdDraw.square(20,40-4,2);
+        StdDraw.text(20,40-4,"4");
+        StdDraw.setPenColor(Color.BLUE);
+        StdDraw.square(24,40-4,2);
+        StdDraw.text(24,40-4,"5");
+        StdDraw.setPenColor(Color.PINK);
+        StdDraw.square(28,40-4,2);
+        StdDraw.text(28,40-4,"6");
+        StdDraw.setPenColor(Color.WHITE);
+        StdDraw.square(32,40-4,2);
+        StdDraw.text(32,40-4,"7");
+        StdDraw.text(20,40-10,"Pick Number for Color Change of Avatar");
+        StdDraw.show();
     }
 
     public void createMainMenu() {
@@ -182,6 +227,8 @@ public class Engine {
         StdDraw.text(20,35,"(N) New Game");
         StdDraw.text(20,30,"(L) Load Game");
         StdDraw.text(20,25,"(Q) Quit Game");
+        StdDraw.text(20,20,"(R) Replay Game");
+        StdDraw.text(20,5,"(A) Avatar Change");
         StdDraw.show();
     }
 
@@ -192,6 +239,8 @@ public class Engine {
         StdDraw.text(20,35,"(N) New Game");
         StdDraw.text(20,30,"(L) Load Game");
         StdDraw.text(20,25,"(Q) Quit Game");
+        StdDraw.text(20,20,"(R) Replay Game");
+        StdDraw.text(20,5,"(A) Avatar Change");
         StdDraw.show();
         StdDraw.text(20,15,"Seed");
         seedNum += input;
@@ -325,36 +374,6 @@ public class Engine {
             if ((current == 'D' || current == 'd') && gameState == GameState.READY) {
                 finalWorldFrame = av.changePos(1, 0, finalWorldFrame);
             }
-            if (current == '1' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.RED, finalWorldFrame);
-            }
-            if (current == '2' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.ORANGE, finalWorldFrame);
-            }
-            if (current == '3' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.YELLOW, finalWorldFrame);
-            }
-            if (current == '4' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.LIME, finalWorldFrame);
-            }
-            if (current == '5' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.GREEN, finalWorldFrame);
-            }
-            if (current == '6' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.AQUA, finalWorldFrame);
-            }
-            if (current == '7' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.BLUE, finalWorldFrame);
-            }
-            if (current == '8' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.PURPLE, finalWorldFrame);
-            }
-            if (current == '9' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.PINK, finalWorldFrame);
-            }
-            if (current == '0' && gameState == GameState.READY ) {
-                finalWorldFrame = av.changeColor(Tileset.WHITE, finalWorldFrame);
-            }
             if (current == ':' && gameState == GameState.READY) {
                 gameState = GameState.PROMPT;
             }
@@ -425,8 +444,8 @@ public class Engine {
             if (r.neighbors == 1 && startX == -1 && startY == -1) {
                 StartBlock sb = new StartBlock(r.centerX, r.centerY);
                 finalWorldFrame[r.centerX][r.centerY] = Tileset.ICE_BLOCK;
-                av = new AvatarHandler(r.centerX - 2, r.centerY - 2, Tileset.WHITE);
-                finalWorldFrame[r.centerX - 2][r.centerY - 2] = Tileset.WHITE;
+                av = new AvatarHandler(r.centerX - 2, r.centerY - 2, color);
+                finalWorldFrame[r.centerX - 2][r.centerY - 2] = color;
                 blocks.add(sb);
                 startX = r.centerX;
                 startY = r.centerY;
