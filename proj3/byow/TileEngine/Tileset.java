@@ -17,16 +17,26 @@ import java.awt.Color;
  */
 
 public class Tileset {
-    public static final TETile RED = new TETile('@', new Color(197, 17, 17), Color.black, "you");
-    public static final TETile ORANGE = new TETile('@', new Color(239, 125, 13), Color.black, "you");
-    public static final TETile YELLOW = new TETile('@', new Color(245, 245, 87), Color.black, "you");
-    public static final TETile LIME = new TETile('@', new Color(80, 239, 57), Color.black, "you");
-    public static final TETile GREEN = new TETile('@', new Color(17, 127, 45), Color.black, "you");
-    public static final TETile AQUA = new TETile('@', new Color(57, 254, 221), Color.black, "you");
-    public static final TETile BLUE = new TETile('@', new Color(19, 46, 209), Color.black, "you");
-    public static final TETile PURPLE = new TETile('@', new Color(107, 47, 187), Color.black, "you");
-    public static final TETile PINK = new TETile('@', new Color(237, 84, 186), Color.black, "you");
-    public static final TETile WHITE = new TETile('@', new Color(214, 224, 240), Color.black, "you");
+    public static final TETile RED = new TETile('@', new Color(197, 17, 17),
+            Color.black, "you");
+    public static final TETile ORANGE = new TETile('@', new Color(239, 125, 13),
+            Color.black, "you");
+    public static final TETile YELLOW = new TETile('@', new Color(245, 245, 87),
+            Color.black, "you");
+    public static final TETile LIME = new TETile('@', new Color(80, 239, 57),
+            Color.black, "you");
+    public static final TETile GREEN = new TETile('@', new Color(17, 127, 45),
+            Color.black, "you");
+    public static final TETile AQUA = new TETile('@', new Color(57, 254, 221),
+            Color.black, "you");
+    public static final TETile BLUE = new TETile('@', new Color(19, 46, 209),
+            Color.black, "you");
+    public static final TETile PURPLE = new TETile('@', new Color(107, 47, 187),
+            Color.black, "you");
+    public static final TETile PINK = new TETile('@', new Color(237, 84, 186),
+            Color.black, "you");
+    public static final TETile WHITE = new TETile('@', new Color(214, 224, 240),
+            Color.black, "you");
 
 
 
@@ -41,7 +51,8 @@ public class Tileset {
             "extra support block");
     public static final TETile ICE_BLOCK = new TETile('▢', new Color(131, 148, 191), Color.black,
             "your block");
-    public static final TETile GOAL = new TETile(' ', new Color(255, 210, 20), new Color(255, 210, 20), "goal");
+    public static final TETile GOAL = new TETile(' ', new Color(255, 210, 20),
+            new Color(255, 210, 20), "goal");
 }
 
 
