@@ -358,10 +358,6 @@ public class Engine {
                 gameState = GameState.PROMPT;
             }
             checkBlockPusher();
-            if(finalWorldFrame != null && replay) {
-                StdDraw.pause(500);
-                ter.renderFrame(finalWorldFrame);
-            }
         }
         ter.renderFrame(finalWorldFrame);
         replay = false;
